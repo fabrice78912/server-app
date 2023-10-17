@@ -7,5 +7,6 @@
 
 FROM eclipse-temurin:18-alpine
 VOLUME /tmp
-COPY target/*.jar server-app.jar
+#COPY target/*.jar server-app.jar
+COPY --chown=appuser:appuser target/**.jar /home/appuser/server-app.jar
 ENTRYPOINT ["java","-jar","/server-app.jar"]
