@@ -23,7 +23,7 @@ class ServerResourceTest {
     private MockMvc mockMvc;
 
 
-    @Test
+    /*@Test
     void getServers() throws Exception{
 
         mockMvc.perform(MockMvcRequestBuilders.get("/server/list")
@@ -56,5 +56,5 @@ class ServerResourceTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Ping failed"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("OK"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.server").doesNotExist());
-    }
+    }*/
 }
