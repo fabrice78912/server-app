@@ -1,6 +1,7 @@
 FROM openjdk:18
 EXPOSE 8080
 COPY target/server-app.jar ./
+RUN mvn -f pom.xml clean package -DskipTests
 ADD target/server-app.jar server-app.jar
 ENTRYPOINT ["java","-jar","/server-app.jar"]
 
