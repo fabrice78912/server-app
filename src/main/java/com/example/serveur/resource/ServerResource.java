@@ -9,6 +9,7 @@ import com.example.serveur.model.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class ServerResource {
         );
     }
 
-    @GetMapping("/ping/{ipAddress}")
+    /*@GetMapping("/ping/{ipAddress}")
     public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
         Server server= serverService.ping(ipAddress);
         return ResponseEntity.ok(
@@ -56,7 +57,38 @@ public class ServerResource {
                         .statusCode(OK.value())
                         .build()
         );
+    }*/
+
+
+
+    @GetMapping("/ping/{ipAddress}")
+    public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
+        Server server = serverService.ping(ipAddress);
+
+        if (server != null) {
+            String message = (server.getStatus() == Status.SERVER_UP) ? "ping success" : "Ping failed";
+
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(Map.of("server", server))
+                            .message(message)
+                            .status(OK)
+                            .statusCode(OK.value())
+                            .build()
+            );
+        } else {
+            // Handle the case where server is null, e.g., return an error response.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Response.builder()
+                            .timeStamp(now())
+                            .message("Failed to ping server")
+                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .build());
+        }
     }
+
 
 
 
