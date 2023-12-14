@@ -15,4 +15,6 @@ public interface ServerService {
     Server update(Server server);
     Boolean delete(Long id);
     Server ping (String ipAddress) throws IOException;
+
+    Server update (Long id , Server serverUpdate) throws IOException;
 }

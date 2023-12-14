@@ -135,6 +135,19 @@ public class ServerResource {
         );
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response> UpdateServer(@PathVariable("id") Long id ,@RequestBody Server server) throws IOException {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("server", serverService.update(id, server)))
+                        .message("Server deleted")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
 
 
     @GetMapping(value = "/image/{fileName}" , produces = IMAGE_PNG_VALUE)

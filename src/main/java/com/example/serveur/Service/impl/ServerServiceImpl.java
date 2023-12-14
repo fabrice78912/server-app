@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.UUID;
 
 import static java.lang.Boolean.TRUE;
 import static org.springframework.data.domain.PageRequest.of;
@@ -27,6 +28,13 @@ public class ServerServiceImpl implements ServerService {
     @Override
     public Server create(Server server) {
         log.info("Saving new server : {}" , server.getName());
+
+
+/*        do {
+            Long IdGenerated= Long.valueOf(UUID.randomUUID().toString());
+
+        }while(serverRepo.findById(Long.valueOf(UUID.randomUUID().toString())).get() != null);
+        server.setId(UUID.randomUUID().toString());*/
         server.setImageUrl(setServerImageUrl());
         return serverRepo.save(server);
     }
@@ -68,5 +76,18 @@ public class ServerServiceImpl implements ServerService {
         server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
         serverRepo.save(server);
         return server;
+    }
+
+    @Override
+    public Server update(Long id , Server serverUpade) throws IOException {
+        Server server= this.get(id);
+        server.setStatus(serverUpade.getStatus());
+        server.setMemory(serverUpade.getMemory());
+        server.setName(serverUpade.getName());
+        server.setType(serverUpade.getType());
+        server.setIpAddress(serverUpade.getIpAddress());
+        //server.setImageUrl(serverUpade.getImageUrl());
+        Server serverSaved = serverRepo.save(server);
+        return serverSaved;
     }
 }
