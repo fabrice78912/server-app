@@ -25,6 +25,6 @@ RUN mvn -f pom.xml clean package -DskipTests
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 # Copy the packaged jar app file to a smaller JRE base image
-COPY --from=compile "/app/target/server-app.jar" /usr/share/
+COPY /app/target/server-app.jar /usr/share/
 EXPOSE $PORT
 ENTRYPOINT ["java", "-jar", "/usr/share/server-app.jar"]
