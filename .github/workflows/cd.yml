@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Pull Docker image
-      run: sudo docker pull varsubham/cicd-pipeline:latest
+      run: sudo docker pull fabrice7891/cicd-pipeline:latest
     - name: Delete Old docker container
       run: sudo docker rm -f cicd-pipeline-container || true
     - name: Run Docker Container
