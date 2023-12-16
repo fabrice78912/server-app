@@ -15,16 +15,33 @@
 
 
 
-FROM eclipse-temurin:17-jre-alpine
-ARG PORT=8080
+#FROM eclipse-temurin:17-jre-alpine
+#ARG PORT=8080
 # Build the jar using maven 
-RUN apk add maven
+#RUN apk add maven
+#WORKDIR /app
+#COPY . /app/
+#RUN mvn -f pom.xml clean package -DskipTests
+
+3FROM adoptopenjdk/openjdk11:alpine-jre
+# Copy the packaged jar app file to a smaller JRE base image
+#COPY /app/target/server-app.jar /usr/share/
+#EXPOSE $PORT
+#ENTRYPOINT ["java", "-jar", "/usr/share/server-app.jar"]
+
+
+
+# Step 1: Builder le projet avec maven
+FROM maven:3.8.3-openjdk-17-slim AS maven-builder
 WORKDIR /app
-COPY . /app/
+COPY . /app
 RUN mvn -f pom.xml clean package -DskipTests
 
-FROM adoptopenjdk/openjdk11:alpine-jre
-# Copy the packaged jar app file to a smaller JRE base image
-COPY /app/target/server-app.jar /usr/share/
-EXPOSE $PORT
-ENTRYPOINT ["java", "-jar", "/usr/share/server-app.jar"]
+# Step 2: Copier et lancer le .jar file
+FROM openjdk:17-alpine
+WORKDIR /app
+COPY --from=maven-builder ./app/target/server-app.jar .
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "server-app.jar"]
