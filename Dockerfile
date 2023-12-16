@@ -23,7 +23,7 @@
 #COPY . /app/
 #RUN mvn -f pom.xml clean package -DskipTests
 
-3FROM adoptopenjdk/openjdk11:alpine-jre
+#FROM adoptopenjdk/openjdk11:alpine-jre
 # Copy the packaged jar app file to a smaller JRE base image
 #COPY /app/target/server-app.jar /usr/share/
 #EXPOSE $PORT
